@@ -107,3 +107,9 @@ def calc_incidence_LK(df, unique_ID):
         RegionID["incidence7d"] = RegionID["cases7d"] / RegionID["Einwohner"] * 100000
         Region_I = pd.concat([Region_I, RegionID])
     return Region_I
+
+def copy(source, destination):
+   with open(source, 'rb') as file:
+       myFile = file.read()
+   with open(destination, 'wb') as file:
+       file.write(myFile)
