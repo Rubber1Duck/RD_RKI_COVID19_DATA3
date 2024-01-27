@@ -22,7 +22,7 @@ def build_meta(datum):
     "modified": unix_timestamp}
   
   return new_meta
-datum = "2020-04-26"
+datum = "2020-04-27"
 new_meta = build_meta(datum)
 metaNew_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta_new.json")
 with open(metaNew_path, "w", encoding="utf8") as json_file:
@@ -35,7 +35,6 @@ f_update()
 meta_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta.json")
 os.remove(meta_path)
 os.rename(metaNew_path, meta_path)
-os.system("git status")
 os.system("git add .")
 os.system('git commit -m"update ' + datumversion + '"')
 os.system("git push")
