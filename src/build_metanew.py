@@ -1,5 +1,5 @@
 from download_pkg import *
-import os, json
+import os, json, sys
 import datetime as dt
 from update_github_action import update
 from fallzahlen_update import f_update
@@ -22,7 +22,8 @@ def build_meta(datum):
     "modified": unix_timestamp}
   
   return new_meta
-datum = "2020-05-10"
+datum = sys.argv[1]
+print (datum)
 new_meta = build_meta(datum)
 metaNew_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta_new.json")
 with open(metaNew_path, "w", encoding="utf8") as json_file:
