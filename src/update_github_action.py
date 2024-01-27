@@ -67,6 +67,7 @@ def update():
     # ----- Squeeze the dataframe to ideal memory size (see "compressing" Medium article and run_dataframe_squeeze.py for background)
     LK = ut.squeeze_dataframe(LK)
     aktuelleZeit = dt.datetime.now().strftime(format="%Y-%m-%dT%H:%M:%SZ")
+    print (LK.shape[0]," rows")
     print(aktuelleZeit, ": done.")
     data_path = os.path.join(base_path, "..", "data")
     fileNameXz = fileName + ".xz"
