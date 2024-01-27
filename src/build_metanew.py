@@ -46,7 +46,7 @@ os.system('git push --tag')
 os.system('gh release create ' + version +' --latest --notes "release ' + version + '"')
 endTime = dt.datetime.now()
 aktuelleZeit = dt.datetime.now().strftime(format="%Y-%m-%dT%H:%M:%SZ")
-print(aktuelleZeit, ": total time for date: ",datum, "=>", endTime - startTime)
+print(aktuelleZeit, ": total time for date:",datum, "=>", endTime - startTime)
 
 
 
