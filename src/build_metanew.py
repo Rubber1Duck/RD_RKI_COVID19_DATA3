@@ -22,7 +22,7 @@ def build_meta(datum):
     "modified": unix_timestamp}
   
   return new_meta
-datum = "2020-05-03"
+datum = "2020-05-04"
 new_meta = build_meta(datum)
 metaNew_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta_new.json")
 with open(metaNew_path, "w", encoding="utf8") as json_file:
