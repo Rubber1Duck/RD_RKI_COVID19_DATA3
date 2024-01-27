@@ -3,16 +3,15 @@ import os, json
 import datetime as dt
 from update_github_action import update
 from fallzahlen_update import f_update
-import utils as ut
 
 def build_meta(datum):
   filename = "RKI_COVID19_XXXX-XX-XX.csv.xz"
   filename = filename.replace("XXXX-XX-XX", datum)
   source_path = "W:\\RKI_COVID19_DATA_Archiv\\" + filename
-  dest_path = "F:\\RD_RKI_COVID19_DATA2\\data\\" + filename
+  dest_path = "F:\\RD_RKI_COVID19_DATA3\\data\\" + filename
   datetime = dt.datetime.strptime(datum, "%Y-%m-%d")
   unix_timestamp = int(dt.datetime.timestamp(datetime)*1000)
-  ut.copy(source=source_path, destination=dest_path)
+  os.system("copy " + source_path + " " + dest_path)
 
   new_meta = {
     "publication_date": datum,
@@ -24,7 +23,7 @@ def build_meta(datum):
   
   return new_meta
 
-new_meta = build_meta("2020-04-22")
+new_meta = build_meta("2020-04-23")
 metaNew_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta_new.json")
 with open(metaNew_path, "w", encoding="utf8") as json_file:
         json.dump(new_meta, json_file, ensure_ascii=False)
