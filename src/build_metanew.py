@@ -22,6 +22,8 @@ def build_meta(datum):
     "modified": unix_timestamp}
   
   return new_meta
+
+startTime = dt.datetime.now()
 datum = sys.argv[1]
 print (datum)
 new_meta = build_meta(datum)
@@ -42,6 +44,10 @@ os.system("git push")
 os.system("git tag " + version)
 os.system('git push --tag')
 os.system('gh release create ' + version +' --latest --notes "release ' + version + '"')
+endTime = dt.datetime.now()
+aktuelleZeit = dt.datetime.now().strftime(format="%Y-%m-%dT%H:%M:%SZ")
+print(aktuelleZeit, ": total time for date: ",datum, "=>", endTime - startTime)
+
 
 
 
