@@ -1,6 +1,6 @@
-from download_pkg import *
-import os, json, sys
+import os, json, sys, random, time
 import datetime as dt
+import pandas as pd
 from update_github_action import update
 from fallzahlen_update import f_update
 
@@ -23,31 +23,41 @@ def build_meta(datum):
   
   return new_meta
 
-startTime = dt.datetime.now()
-datum = sys.argv[1]
-print (datum)
-new_meta = build_meta(datum)
-metaNew_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta_new.json")
-with open(metaNew_path, "w", encoding="utf8") as json_file:
-        json.dump(new_meta, json_file, ensure_ascii=False)
-versionsplit = datum.split("-")
-datumversion = versionsplit[0] + versionsplit[1] + versionsplit[2]
-version = "v1.9." + datumversion
-update()
-f_update()
-meta_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta.json")
-os.remove(meta_path)
-os.rename(metaNew_path, meta_path)
-os.system("git add .")
-os.system('git commit -m"update ' + datumversion + '"')
-os.system("git push")
-os.system("git tag " + version)
-os.system('git push --tag')
-os.system('gh release create ' + version +' --latest --notes "release ' + version + '"')
-endTime = dt.datetime.now()
-aktuelleZeit = dt.datetime.now().strftime(format="%Y-%m-%dT%H:%M:%SZ")
-print(aktuelleZeit, ": total time for date:",datum, "=>", endTime - startTime)
 
+startDatum = sys.argv[1]
+startObject = dt.datetime.strptime(startDatum, '%Y-%m-%d')
+endDatum = sys.argv[2]
+endObject = dt.datetime.strptime(endDatum, '%Y-%m-%d')
+print("running from", startObject, "to", endObject)
+for datumloop in pd.date_range(start=startObject, end=endObject).tolist():
+  startTime = dt.datetime.now()
+  datum = datumloop.strftime('%Y-%m-%d')
+  print (datum)
+  new_meta = build_meta(datum)
+  metaNew_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta_new.json")
+  with open(metaNew_path, "w", encoding="utf8") as json_file:
+    json.dump(new_meta, json_file, ensure_ascii=False)
+  versionsplit = datum.split("-")
+  datumversion = versionsplit[0] + versionsplit[1] + versionsplit[2]
+  version = "v1.9." + datumversion
+  update()
+  f_update()
+  meta_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dataStore", "meta", "meta.json")
+  os.remove(meta_path)
+  os.rename(metaNew_path, meta_path)
+  os.system("git add .")
+  os.system('git commit -m"update ' + datumversion + '"')
+  os.system("git push")
+  os.system("git tag " + version)
+  os.system('git push --tag')
+  os.system('gh release create ' + version +' --latest --notes "release ' + version + '"')
+  endTime = dt.datetime.now()
+  aktuelleZeit = dt.datetime.now().strftime(format="%Y-%m-%dT%H:%M:%SZ")
+  print(aktuelleZeit, ": total time for date:",datum, "=>", endTime - startTime)
+  timeout = random.randint(2000,5000)
+  print(f'Sleeping for {timeout/1000} seconds')
+  time.sleep(timeout/1000)
+  
 
 
 
