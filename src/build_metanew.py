@@ -54,9 +54,7 @@ for datumloop in pd.date_range(start=startObject, end=endObject).tolist():
   endTime = dt.datetime.now()
   aktuelleZeit = dt.datetime.now().strftime(format="%Y-%m-%dT%H:%M:%SZ")
   print(aktuelleZeit, ": total time for date:",datum, "=>", endTime - startTime)
-  timeout = random.randint(2000,5000)
-  print(f'Sleeping for {timeout/1000} seconds')
-  time.sleep(timeout/1000)
+
   
 
 
