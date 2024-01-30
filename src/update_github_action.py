@@ -564,18 +564,26 @@ def update():
     LK["Datenstand"] = pd.to_datetime(LK["Datenstand"]).dt.date
     BL["Datenstand"] = pd.to_datetime(BL["Datenstand"]).dt.date
     if (Datenstand.date().strftime("%Y-%m-%d") >="2023-04-18"):
-        LK_kum_old = ut.read_json(fn="LK.json.xz", dtype=LK_dtypes, path=path)
-        BL_kum_old = ut.read_json(fn="BL.json.xz", dtype=BL_dtypes, path=path)
-        LK_kum_old["Datenstand"] = pd.to_datetime(LK_kum_old["Datenstand"]).dt.date
-        BL_kum_old["Datenstand"] = pd.to_datetime(BL_kum_old["Datenstand"]).dt.date
-        LK_kum_old = LK_kum_old[LK_kum_old["Datenstand"] != Datenstand2]
-        BL_kum_old = BL_kum_old[BL_kum_old["Datenstand"] != Datenstand2]
-        LK_kum_old = pd.concat([LK_kum_old, LK])
-        LK_kum_old.sort_values(by=key_list_LK, inplace=True)
-        BL_kum_old = pd.concat([BL_kum_old, BL])
-        BL_kum_old.sort_values(by=key_list_BL, inplace=True)
-        LK_kum_old["Datenstand"] = LK_kum_old["Datenstand"].astype(str)
-        BL_kum_old["Datenstand"] = BL_kum_old["Datenstand"].astype(str)
+        try:
+            LK_kum_old = ut.read_json(fn="LK.json.xz", dtype=LK_dtypes, path=path)
+            BL_kum_old = ut.read_json(fn="BL.json.xz", dtype=BL_dtypes, path=path)
+            LK_kum_old["Datenstand"] = pd.to_datetime(LK_kum_old["Datenstand"]).dt.date
+            BL_kum_old["Datenstand"] = pd.to_datetime(BL_kum_old["Datenstand"]).dt.date
+            LK_kum_old = LK_kum_old[LK_kum_old["Datenstand"] != Datenstand2]
+            BL_kum_old = BL_kum_old[BL_kum_old["Datenstand"] != Datenstand2]
+            LK_kum_old = pd.concat([LK_kum_old, LK])
+            LK_kum_old.sort_values(by=key_list_LK, inplace=True)
+            BL_kum_old = pd.concat([BL_kum_old, BL])
+            BL_kum_old.sort_values(by=key_list_BL, inplace=True)
+            LK_kum_old["Datenstand"] = LK_kum_old["Datenstand"].astype(str)
+            BL_kum_old["Datenstand"] = BL_kum_old["Datenstand"].astype(str)
+        except:
+            LK_kum_old = LK.copy()
+            LK_kum_old.sort_values(by=key_list_LK, inplace=True)
+            BL_kum_old = BL.copy()
+            BL_kum_old.sort_values(by=key_list_BL, inplace=True)
+            LK_kum_old["Datenstand"] = LK_kum_old["Datenstand"].astype(str)
+            BL_kum_old["Datenstand"] = BL_kum_old["Datenstand"].astype(str)
         ut.write_json(df=LK_kum_old, fn="LK.json.xz", pt=path)
         ut.write_json(df=BL_kum_old, fn="BL.json.xz", pt=path)
     LK_kum_new = ut.read_json(fn="LK_complete.json.xz", dtype=kum_dtypes, path=path)
